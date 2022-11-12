@@ -1,0 +1,23 @@
+html
+{
+margin:1px;
+padding:1px;
+}
+
+body
+{
+margin:4px;
+padding:4px;
+color:#000040;
+background-color:#BBEEFF;
+}
+
+
+#puzzle_area
+{
+	width:600px;
+	height:450px;
+	position:absolute;
+	top:120px;
+	left:300px;
+}

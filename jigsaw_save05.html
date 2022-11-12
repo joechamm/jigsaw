@@ -1,0 +1,185 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+
+<html>
+	<head>
+		<title> Drag and drop </title>
+ 		<link rel="stylesheet" type="text/css" href="./jigsaw.css" />
+		<script type="text/javascript" src = "./jigsaw.js"></script>
+		<script type="text/javascript">
+			var imDirPaths, imageArray, imFileNames;
+				
+
+			function getRow(n) {
+				var row = Math.floor((n / 4));
+				return row;
+			}
+
+			function getColumn(n) {
+				var column = n % 4;
+				return column;
+			}
+		
+			function getRowColumn(imStr, row, col) {
+				var dotIdx = imStr.lastIndexOf(".");
+				var imNum = imStr.charAt(dotIdx - 1);
+				if(imNum == 0 || imNum == 1 || imNum == 2) {
+					var tenPlace = imStr.charAt(dotIdx - 2);
+					if(tenPlace == 1) {
+						imNum = imNum + 10;
+					}
+				}
+				alert(imNum);
+
+				row = getRow(imNum);
+				col = getColumn(imNum);
+			}
+
+			function getImageNum(imStr) {
+				var dotIdx = imStr.lastIndexOf(".");
+				var imNum = imStr.charAt(dotIdx - 1);
+				if(imNum == 0 || imNum == 1 || imNum == 2) {
+					var tenPlace = imStr.charAt(dotIdx - 2);
+					if(tenPlace == 1) {
+						if(imNum == 0) {
+							imNum = 10;
+						} else if(imNum == 1) {
+							imNum = 11;
+						} else {
+							imNum = 12;
+						}
+					}
+				}
+				return imNum;
+			}	
+
+			function getRandFileNames() {
+				var randIdx = Math.random() * 3;
+				randIdx = Math.floor(randIdx);
+				var rplus = randIdx + 1;
+				var randStr = rplus.toString();
+				var imString = new String();
+				for(var i = 0; i < 12; ++i) {
+					var iSt = new String((i + 1));
+					imString = imDirPaths[randIdx];
+					imString += "img" + randStr + "-" + iSt + ".jpg";
+					imFileNames[i] = imString;
+				}
+			}
+
+			function placeImage(imElem) {
+				var n = (imElem.row) * 4 + (imElem.column);
+				switch(n)
+				{
+				case 1:
+					document.getElementById("area_1").appendChild(imElem);
+					break;
+				case 2:
+  				document.getElementById("area_2").appendChild(imElem);
+          break;
+				case 3:
+  				document.getElementById("area_3").appendChild(imElem);
+          break;
+  			case 4:
+  				document.getElementById("area_4").appendChild(imElem);
+          break;
+  			case 5:
+  				document.getElementById("area_5").appendChild(imElem);
+          break;
+  			case 6:
+  				document.getElementById("area_6").appendChild(imElem);
+          break;
+  			case 7:
+  				document.getElementById("area_7").appendChild(imElem);
+          break;
+  			case 8:
+  				document.getElementById("area_8").appendChild(imElem);
+          break;
+  			case 9:
+  				document.getElementById("area_9").appendChild(imElem);
+          break;
+ 				 case 10:
+  				document.getElementById("area_10").appendChild(imElem);
+          break;
+  			case 11:
+  				document.getElementById("area_11").appendChild(imElem);
+          break;
+  			case 12:
+  				document.getElementById("area_12").appendChild(imElem);
+          break
+				}
+			}
+		
+			function createNewImage(imSrc) {
+				var imNum = getImageNum(imSrc);
+				var n = new Number(imNum);
+				n = n - 1;
+				var row = Math.floor(n / 4);
+				var col = n % 4;
+				var width = 100;
+				var height = 100;
+				var xCoord = 150 + (col * width);
+				var yCoord = 150 + (row * height);
+				var imId = "im_" + imNum.toString();
+				var img = new Image();
+				img.type = "image";
+				img.name = imNum.toString();
+				img.id = imId;
+				img.src = imSrc;
+				img.row = row;
+				img.column = col;	
+				img.x = xCoord;
+				img.y = yCoord;
+				img.width = width;
+				img.height = height;
+				var debugStr = "creating image: " + imId + "at Row: " + row + " Col: " + col + "x: " + xCoord + " y: " + yCoord + "<br>";
+				alert(debugStr);
+				img.onmousedown = "grabber(event);";
+				img.onload = function() {
+					placeImage( img );		
+				}	
+				return img;
+			}
+			
+			function loadImages() {
+				getRandFileNames();
+				for(var i = 0; i < 12; ++i) {
+					imageArray[i] = createNewImage(imFileNames[i]);
+				}
+			}
+
+			function init() {
+				imDirPaths = new Array(3);
+				imDirPaths[0] = "./Images/images1/";
+				imDirPaths[1] = "./Images/images2/";
+				imDirPaths[2] = "./Images/images3/";
+				
+				imageArray = new Array(12);
+				imFileNames = new Array(12);
+
+				loadImages();
+			}
+		</script>
+	</head>
+
+	<body onload="init()">
+		<p id="testArea">
+			put stuff here
+		</p>
+		<div id="grid_area">
+			<div id="area_1" style="position: absolute; top:100px; left:100px;" width="100" height="100">
+				<img style="position: absolute; top:100px; left:100px;" src="./Images/images1/puzzleback.gif" width="400" height="300" />
+			</div>
+			<div id="area_2" style="position: absolute; top:100px; left:200px;" width="100" height="100">
+			<div id="area_3" style="position: absolute; top:100px; left:300px;" width="100" height="100">
+			<div id="area_4" style="position: absolute; top:100px; left:400px;" width="100" height="100">
+			<div id="area_5" style="position: absolute; top:200px; left:100px;" width="100" height="100">
+			<div id="area_6" style="position: absolute; top:200px; left:200px;" width="100" height="100">
+			<div id="area_7" style="position: absolute; top:200px; left:300px;" width="100" height="100">
+			<div id="area_8" style="position: absolute; top:200px; left:400px;" width="100" height="100">
+			<div id="area 9" style="position: absolute; top:300px; left:100px;" width="100" height="100">
+			<div id="area 10" style="position: absolute; top:300px; left:200px;" width="100" height="100">
+			<div id="area 11" style="position: absolute; top:300px; left:300px;" width="100" height="100">
+			<div id="area 12" style="position: absolute; top:300px; left:400px;" width="100" height="100">
+		</div>
+	</body>
+</html>

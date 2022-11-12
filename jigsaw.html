@@ -1,0 +1,114 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+
+<html>
+	<head>
+		<title> Drag and drop </title>
+ 		<link rel="stylesheet" type="text/css" href="./jigsaw.css" />
+		<script type="text/javascript" src = "./jigsaw.js"></script>
+		<script type="text/javascript">
+			var currentImage;
+
+			var im1Sources = ["./Images/images1/img1-1.jpg","./Images/images1/img1-2.jpg","./Images/images1/img1-3.jpg","./Images/images1/img1-4.jpg",
+	"./Images/images1/img1-5.jpg","./Images/images1/img1-6.jpg","./Images/images1/img1-7.jpg","./Images/images1/img1-8.jpg","./Images/images1/img1-9.jpg",
+	"./Images/images1/img1-10.jpg","./Images/images1/img1-11.jpg","./Images/images1/img1-12.jpg"];
+
+ 	var im2Sources = ["./Images/images2/img2-1.jpg","./Images/images2/img2-2.jpg","./Images/images2/img2-3.jpg","./Images/images2/img2-4.jpg",
+  "./Images/images2/img2-5.jpg","./Images/images2/img2-6.jpg","./Images/images2/img2-7.jpg","./Images/images2/img2-8.jpg","./Images/images2/img2-9.jpg",
+  "./Images/images2/img2-10.jpg","./Images/images2/img2-11.jpg","./Images/images2/img2-12.jpg"];
+
+ var im3Sources = ["./Images/images3/img3-1.jpg","./Images/images3/img3-2.jpg","./Images/images3/img3-3.jpg","./Images/images3/img3-4.jpg",
+  "./Images/images3/img3-5.jpg","./Images/images3/img3-6.jpg","./Images/images3/img3-7.jpg","./Images/images3/img3-8.jpg","./Images/images3/img3-9.jpg",
+  "./Images/images3/img3-10.jpg","./Images/images3/img3-11.jpg","./Images/images3/img3-12.jpg"];
+
+			function shuffleArray(myArray) {
+				var tempArray = new Array();
+				var indexArray = new Array();
+
+				while(indexArray.length < 12) {
+					var randIdx = Math.floor((Math.random() * 12));
+					if(indexArray.indexOf(randIdx) == - 1) {
+						indexArray.push(randIdx);
+						tempArray.push(myArray[randIdx]);
+					}
+				}
+				
+				for(var i = 0; i < 12; ++i) {
+					myArray[i] = tempArray[i];
+				}
+			}
+
+			function initImages() {
+				var randIdx = Math.random() * 3;
+				currentImage = Math.floor(randIdx);
+				 if(currentImage == 0) {
+            shuffleArray(im1Sources);
+          } else if(currentImage == 1) {
+            shuffleArray(im2Sources);
+          } else {
+            shuffleArray(im3Sources);
+          }
+
+        for(var i = 0; i < 12; ++i) {
+          var img = new Image();
+					if(currentImage == 0) {
+						img.src = im1Sources[i];
+					} else if(currentImage == 1) {
+						img.src = im2Sources[i];
+					} else {
+						img.src = im3Sources[i];
+					}
+					img.width = "100";
+					img.height = "100";
+					img.id = i + 1;
+					var row = getRowByIdx(i);
+					var col = getColByIdx(i);
+					var x = col * 100;
+					var y = row * 100;
+					img.style.top = y + "px";
+					img.style.left = x + "px";
+					img.style.position = "absolute";
+					document.getElementById("puzzle_area").appendChild( img );
+				}
+      }
+
+			function addEventListeners() {
+				for(var i = 1; i <= 12; ++i) {
+					var idStr = new String(i);
+					document.getElementById(idStr).addEventListener("mousedown", grabber, true);
+				}
+			}
+
+			function init() {
+				var puzzArea = document.getElementById("puzzle_area");
+				var puzzPos = findPos(puzzArea);
+				gridOffsetX = puzzPos.x;
+				gridOffsetY = puzzPos.y;
+				initGridRects();
+				initImages();
+				addEventListeners();
+				initGridOccupants();
+
+				document.getElementById("test_area").innerHTML += "Puzzle Area:(" + puzzPos.x + "," + puzzPos.y + ")<br>";
+				offsetGridRects(puzzPos.x, puzzPos.y);
+			}
+		</script>
+	</head>
+
+	<body onload="init()">
+		<h1>Jigsaw Puzzle</h1>
+		<div id="puzzle_area" width="400" height="300">
+			<img src="./Images/images1/puzzleback.gif" width="400" height="300" style="position:absolute; top:0px; left:0px;" />
+		</div>
+		<div id="test_area">
+			stuff here<br>
+		</div>
+		<div id="coords">
+			Current Coords
+		</div>
+		<div id="areaInts">
+			Area Intersects
+		</div>
+		<button type="button" onclick="displayGridOccupants();" >Display Grid Occupants</button>
+		<button type="button" onclick="displayGridCoords();" >Display Grid Coords</button>
+	</body>
+</html>
